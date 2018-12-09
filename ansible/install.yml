@@ -1,0 +1,8 @@
+---
+
+- hosts: server
+  become: true
+  vars_files:
+   - vars 
+  roles:
+   - onelife
