@@ -1,0 +1,70 @@
+#!/bin/bash
+
+
+# make sure user is root
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as root." 
+	exit 1
+fi
+
+
+read -p "Ssh username (needs sudo power): " ssh_username
+read -s -p "Ssh password: " ssh_password
+
+if [[ $1 == "walkthrough" ]]; then	
+
+	read -p "Max users (default: 160): " max_users
+	read -p "Spawn position, fixed or random (default: fixed): " spawn_position
+	read -p "Require login credentials: (default: false): " require_login
+	read -p "Server password (default: none): " server_password
+	read -p "Port number (default: 8005): " port_number
+
+fi
+
+
+
+# skip installing ansible if already installed
+if ! command -v ansible > /dev/null 2>&1; then
+
+		apt-get update
+		apt-get install software-properties-common -y
+		add-apt-repository ppa:ansible/ansible -y
+		apt-get update
+		apt-get install ansible openssh-server -y
+
+else
+	echo ''
+	echo ''
+	echo "Ansible is installed. Skipping ansible Installation."
+fi
+
+
+cd ansible
+
+
+if [[ $1 == "walkthrough" ]]; then
+
+	if [[ -z "${max_users}" ]]; then
+		max_users="160"
+	fi
+	if [[ -z "${spawn_position}" ]]; then
+                spawn_position="fixed"
+        fi
+	if [[ -z "${require_login}" ]]; then
+                require_login="0"
+        fi
+	if [[ -z "$server_password" ]]; then
+                server_password=""
+	else
+		server_password="server_password=${server_password}"
+        fi
+	if [[ -z "${port_number}" ]]; then
+                port_number="8005"
+        fi
+
+
+	ansible-playbook install.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password} max_users=${max_users} spawn_position=${spawn_position} require_login=${require_login} ${server_password} port_number=${port_number}"
+else
+	ansible-playbook install.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password}"	
+fi
+
