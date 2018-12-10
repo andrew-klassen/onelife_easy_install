@@ -17,6 +17,8 @@ chmod +x install
 ./install
 ```
 
+Below is sample output.
+
 Welcome to the onelife_easy_install. This installer was designed
 and tested for Ubuntu 18.04. Please visit the following link
 for documentation. If you wish to preform a more custom installation,
@@ -99,6 +101,6 @@ aklassen80@yahoo.com
 
 ## Installation Directories
 
-/usr/sbin
-/usr/sbin/onelife_easy_install
-/opt/onelife
+/usr/sbin  
+/usr/sbin/onelife_easy_install  
+/opt/onelife  
