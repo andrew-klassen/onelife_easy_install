@@ -1,5 +1,5 @@
 # onelife_easy_install
-##Minimal Installation
+## Minimal Installation
 
 1. clone this repository
 
@@ -17,10 +17,10 @@ chmod +x install
 ./install
 ```
 
-##onelife documentation
+## onelife documentation
 
-onelife is the easy installer's command line utility that makes managing the 
-server after installation easier. Please refer to the --help page below for 
+onelife is the easy installer's command line utility that makes managing the   
+server after installation easier. Please refer to the --help page below for  
 documentation.
 
 root@server:~# onelife --help
@@ -77,5 +77,5 @@ Usage:
 
 Author:
 
-Andrew Klassen
-aklassen80@yahoo.com
+Andrew Klassen  
+aklassen80@yahoo.com  
