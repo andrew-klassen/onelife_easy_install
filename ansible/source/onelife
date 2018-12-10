@@ -87,13 +87,13 @@ elif [[ ${1} == set-version ]]; then
 elif [[ ${1} == get-version ]]; then
 	cat /opt/onelife/OneLife/server/serverCodeVersionNumber.txt
 elif [[ ${1} == install ]]; then
-	cd onelife_easy_install
+	cd /usr/sbin/onelife_easy_install
 	./install
 elif [[ ${1} == uninstall ]]; then
 	rm -rf /opt/onelife
 elif [[ ${1} == reinstall ]]; then
 	rm -rf /opt/onelife
-	cd onelife_easy_install
+	cd /usr/sbin/onelife_easy_install
         ./install
 elif [[ ${1} == reconfigure ]]; then
 	cd onelife_easy_install
