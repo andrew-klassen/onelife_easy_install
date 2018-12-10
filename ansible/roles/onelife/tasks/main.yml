@@ -15,6 +15,7 @@
     repo: 'https://github.com/jasonrohrer/minorGems.git'
     dest: /opt/onelife/minorGems
 
+# force yes allow repo to be updated/clone with existance of custom configuration
 - git:
     repo: 'https://github.com/jasonrohrer/OneLife.git'
     dest: /opt/onelife/OneLife
@@ -45,7 +46,6 @@
 
      rm -f */cache.fcz
 
-
 - file:
     src: '/opt/onelife/OneLifeData7/{{ item.src }}'
     dest: '/opt/onelife/{{ item.dest }}'
@@ -60,7 +60,6 @@
     - { src: 'sprites', dest: 'sprites' }
     - { src: 'transitions', dest: 'transitions' }
     - { src: 'dataVersionNumber.txt', dest: 'dataVersionNumber.txt' }
-
 
 - name: move build script
   copy:
@@ -121,6 +120,7 @@
      echo "{{ eve_x }}" > /opt/onelife/OneLife/server/settings/forceEveLocationX.ini
      echo "{{ eve_y }}" > /opt/onelife/OneLife/server/settings/forceEveLocationY.ini
 
+# allows selected port through firewall
 - name: "add ufw exeption for port (default: 8005)"
   ufw:
     rule: allow
@@ -132,13 +132,11 @@
      
      echo "{{ port_number }}" > /opt/onelife/OneLife/server/settings/port.ini
 
-
 - name: "set maximum amount of users (default: 160)"
   shell: |
      #!/bin/bash
 
      echo "{{ max_users }}" > /opt/onelife/OneLife/server/settings/maxPlayers.ini
-
 
 - name: "set server password"
   shell: |
@@ -146,6 +144,7 @@
      
      echo "{{ server_password }}" > /opt/onelife/OneLife/server/settings/clientPassword.ini
      echo "1" > /opt/onelife/OneLife/server/settings/requireClientPassword.ini
+
   when: server_password is defined
 
 - name: install onelife command line utility
@@ -168,5 +167,3 @@
     owner: root
     group: root
     mode: 0700
-
-

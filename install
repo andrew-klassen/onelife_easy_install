@@ -1,13 +1,22 @@
 #!/bin/bash
 
 
+echo ''
+echo "Welcome to the onelife_easy_install. This installer was designed "
+echo "and tested for Ubuntu 18.04. Please visit the following link"
+echo "for documentation. If you wish to preform a more custom installation,"
+echo "press Ctrl+c and execute the installer using \"./install walkthrough\"."
+echo ''
+echo "https://github.com/andrew-klassen/onelife_easy_install"
+echo ''
+
 # make sure user is root
 if [[ $EUID -ne 0 ]]; then
 	echo "This script must be run as root." 
 	exit 1
 fi
 
-
+# login info for ansible
 read -p "Ssh username (needs sudo power): " ssh_username
 read -s -p "Ssh password: " ssh_password
 
@@ -16,15 +25,17 @@ echo ''
 if [[ $1 == "walkthrough" ]]; then	
 
 	read -p "Max users (default: 160): " max_users
-	read -p "Spawn position, fixed or random (default: fixed): " spawn_position
-
+	read -p "Eve spawn position, fixed or random (default: fixed): " spawn_position
+	
+	# make sure using provided a correct response
 	while [[ ${spawn_position} != "random" && ${spawn_position} != "fized" && ${spawn_position} != "" ]]
 	do 
-		read -p "Spawn position, [fixed or random]: " spawn_position
+		read -p "Eve spawn position, [fixed or random]: " spawn_position
 	done
 
 	read -p "Require login credentials: (default: false): " require_login
 
+	# make sure using provided a correct response
 	while [[ ${require_login} != true && ${require_login} != false && ${require_login} != "" ]]
         do
                 read -p "Require login credentials [true or false]: " require_login
@@ -34,7 +45,6 @@ if [[ $1 == "walkthrough" ]]; then
 	read -p "Port number (default: 8005): " port_number
 
 fi
-
 
 
 # skip installing ansible if already installed
@@ -47,14 +57,15 @@ if ! command -v ansible > /dev/null 2>&1; then
 		apt-get install ansible openssh-server -y
 
 else
+
 	echo ''
 	echo ''
 	echo "Ansible is installed. Skipping ansible Installation."
+
 fi
 
 
 cd ansible
-
 
 if [[ $1 == "walkthrough" ]]; then
 
@@ -76,9 +87,7 @@ if [[ $1 == "walkthrough" ]]; then
                 port_number="8005"
         fi
 
-
 	ansible-playbook install.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password} max_users=${max_users} ${spawn_position} ticket_check=${ticket_check} ${server_password} port_number=${port_number}"
 else
 	ansible-playbook install.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password}"	
 fi
-
