@@ -58,7 +58,7 @@ Usage:
         onelife start:
                 This starts the server. Use Ctrl+z to end it gracefully.
 
-'       onelife install:
+        onelife install:
                 This will install the server. Note: it will wipe the servers
                 configuration if currently installed. Its recommended to use
                 reconfigure if you are wanting to reconfigure it.
@@ -96,7 +96,7 @@ Usage:
 
 Author:
 
-Andrew Klassen
+Andrew Klassen  
 aklassen80@yahoo.com  
 
 ## Installation Directories
