@@ -148,6 +148,25 @@
      echo "1" > /opt/onelife/OneLife/server/settings/requireClientPassword.ini
   when: server_password is defined
 
+- name: install onelife command line utility
+  copy:
+    src: source/onelife
+    dest: /usr/sbin/onelife
+    owner: root
+    group: root
+    mode: 0700
 
+- name: install onelife ansible files
+  copy:
+    src: ../ansible
+    dest: /usr/sbin/onelife_easy_install
+
+- name: install onelife install script
+  copy:
+    src: ../install
+    dest: /usr/sbin/onelife_easy_install/install
+    owner: root
+    group: root
+    mode: 0700
 
 

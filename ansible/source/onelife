@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# make sure user is root
+if [[ $EUID -ne 0 ]]; then
+        echo "This script must be run as root."
+        exit 1
+fi
+
+if [[ -z "${1}" ]]; then
+	echo ''
+	echo "Please refer to --help."
+	echo ''
+fi
+
+if [[ ${1} == "start" ]]; then
+	cd /opt/onelife/OneLife/server/
+	/opt/onelife/OneLife/server/OneLifeServer
+elif [[ ${1} == "--help" ]]; then
+	echo ''
+	echo "This is a command line utility for managing the one man one life server."
+	echo ''
+	echo "Usage:"
+	echo ''
+	echo "	onelife set-version <version_number>:"
+        echo "		Sets the version for the server. This must match the" 
+	echo "		version that the client is running."
+	echo ''
+	echo "	onelife start:"
+	echo "		This starts the server. Use Ctrl+z to end it gracefully."
+	echo ''
+	echo "	onelife install:"
+	echo "		This will install the server. Note: it will wipe the servers" 
+	echo "		configuration if currently installed. Its recommended to use" 
+	echo "		reconfigure if you are wanting to reconfigure it."
+	echo ''
+	echo "	onelife uninstall:"
+	echo "		Removes the server and all configuation files to free up space."
+	echo ''
+        echo "	onelife reinstall:" 
+	echo "		This is equivalent to using uninstall and then install. Its useful" 
+	echo "		if you want to clean out server logs and reset the map."
+	echo "		Note: reconfigure is significantly faster if you are only wanting" 
+	echo "		to reconfigure the server."
+	echo ''
+	echo "	onelife reconfigure:"
+	echo "		This will reconfigure the server using the walkthrough installation."
+       	echo "		It is also the recommened way to update an exising server. Reconfiguring" 
+	echo "		will not change or remove the map."
+	echo ''
+	echo "Author:"
+	echo ''
+	echo "Andrew Klassen"
+	echo "aklassen80@yahoo.com"
+	echo ''	
+
+elif [[ ${1} == set-version ]]; then
+	if [[ ! -z "${2}" ]]; then
+		echo "${2}" > /opt/onelife/OneLife/server/serverCodeVersionNumber.txt
+	else
+		echo ''
+		echo "What version?"
+	        echo "syntax: onelife set-version <version_number>"
+		echo ''
+	fi
+elif [[ ${1} == install ]]; then
+	cd onelife_easy_install
+	./install
+elif [[ ${1} == uninstall ]]; then
+	rm -rf /opt/onelife
+elif [[ ${1} == reinstall ]]; then
+	rm -rf /opt/onelife
+	cd onelife_easy_install
+        ./install
+elif [[ ${1} == reconfigure ]]; then
+	cd onelife_easy_install
+        ./install walkthrough
+fi
