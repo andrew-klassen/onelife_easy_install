@@ -9,6 +9,9 @@ echo "press Ctrl+c and execute the installer using \"./install walkthrough\"."
 echo ''
 echo "https://github.com/andrew-klassen/onelife_easy_install"
 echo ''
+echo "Remember to set the server version once installation is complete."
+echo "onelife set-version <version_number>"
+echo ''
 
 # make sure user is root
 if [[ $EUID -ne 0 ]]; then

@@ -42,7 +42,7 @@ elif [[ ${1} == "--help" ]]; then
 	echo "		Removes the server and all configuation files to free up space."
 	echo ''
         echo "	onelife reinstall:" 
-	echo "		This is equivalent to using uninstall and then install. Its useful" 
+	echo "		This is equivalent to using uninstall and then install. It's useful" 
 	echo "		if you want to clean out server logs and reset the map."
 	echo "		Note: reconfigure is significantly faster if you are only wanting" 
 	echo "		to reconfigure the server."
@@ -61,7 +61,7 @@ elif [[ ${1} == "--help" ]]; then
 	echo ''
 	echo "	onelife get-password:"
 	echo "		Reveals the server's password. Unfortunately the server does not"
-	echo "		provide any method of storing the password in the form of a hash."
+	echo "		provide any method of storing the password in a hashed form."
 	echo "		Its recommended that you use a password for your server that"
 	echo "		is not used anywhere else."
 	echo ''
