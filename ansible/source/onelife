@@ -25,7 +25,9 @@ elif [[ ${1} == "--help" ]]; then
 	echo ''
 	echo "	onelife set-version <version_number>:"
         echo "		Sets the version for the server. This must match the" 
-	echo "		version that the client is running."
+	echo "		version that the client is running. The client's"
+	echo "		version number can be found in the dataVersionNumber.txt"
+	echo "		file on the client machine."
 	echo ''
 	echo "	onelife get-version:"
 	echo "		Shows the version of the game the server is running."
