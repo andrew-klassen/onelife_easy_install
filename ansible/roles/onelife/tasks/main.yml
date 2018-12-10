@@ -104,7 +104,7 @@
   shell: |
      #!/bin/bash
 
-     echo "{{ current_version }}" > /opt/onelife/OneLife/server/serverCodeVersionNumber.txt
+     echo $(cat /opt/onelife/dataVersionNumber.txt) > /opt/onelife/OneLife/server/serverCodeVersionNumber.txt
 
 - name: "set requireTicketServerCheck (default: false)"
   shell: |

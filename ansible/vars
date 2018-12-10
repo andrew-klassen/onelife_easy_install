@@ -1,4 +1,3 @@
-current_version: 180
 ticket_check: 0
 force_eve_location: 1
 eve_x: "{{ 1000 | random(start=100) }}"
