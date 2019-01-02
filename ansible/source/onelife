@@ -71,6 +71,9 @@ elif [[ ${1} == "--help" ]]; then
 	echo "		Clears the server's password. Restart is needed for changes to"
 	echo "		take affect."
 	echo ''
+	echo "	onelife play:"
+	echo "		Starts the client."
+	echo ''
 	echo "Author:"
 	echo ''
 	echo "Andrew Klassen"
@@ -100,6 +103,9 @@ elif [[ ${1} == reinstall ]]; then
 elif [[ ${1} == reconfigure ]]; then
 	cd onelife_easy_install
         ./install walkthrough
+elif [[ ${1} == play ]]; then
+	cd /opt/onelife
+	/opt/onelife/OneLifeApp
 elif [[ ${1} == set-password ]]; then
 	if [[ ! -z "${2}" ]]; then
                 echo "${2}" > /opt/onelife/OneLife/server/settings/clientPassword.ini

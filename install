@@ -28,7 +28,7 @@ if [[ $1 == "walkthrough" ]]; then
 	read -p "Eve spawn position, fixed or random (default: fixed): " spawn_position
 	
 	# make sure using provided a correct response
-	while [[ ${spawn_position} != "random" && ${spawn_position} != "fized" && ${spawn_position} != "" ]]
+	while [[ ${spawn_position} != "random" && ${spawn_position} != "fixed" && ${spawn_position} != "" ]]
 	do 
 		read -p "Eve spawn position, [fixed or random]: " spawn_position
 	done
@@ -39,6 +39,14 @@ if [[ $1 == "walkthrough" ]]; then
 	while [[ ${require_login} != true && ${require_login} != false && ${require_login} != "" ]]
         do
                 read -p "Require login credentials [true or false]: " require_login
+        done
+
+	read -p "Turn on easy mode/less hungry? [yes or no] (default: no): " easy_mode
+
+	# make sure using provided a correct response
+	while [[ ${easy_mode} != "yes" && ${easy_mode} != "no" && ${easy_mode} != "" ]]
+        do
+		read -p "Turn on easy mode/less hungry? [yes or no] (default: no): " easy_mode
         done
 
 	read -p "Server password (default: none): " server_password
@@ -86,8 +94,11 @@ if [[ $1 == "walkthrough" ]]; then
 	if [[ -z "${port_number}" ]]; then
                 port_number="8005"
         fi
+	if [[ -z "${easy_mode}" ]]; then
+                easy_mode="no"
+        fi
 
-	ansible-playbook install.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password} max_users=${max_users} ${spawn_position} ticket_check=${ticket_check} ${server_password} port_number=${port_number}"
+	ansible-playbook install.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password} max_users=${max_users} ${spawn_position} ticket_check=${ticket_check} easy_mode=${easy_mode} ${server_password} port_number=${port_number}"
 else
 	ansible-playbook install.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password}"	
 fi
