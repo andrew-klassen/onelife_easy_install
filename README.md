@@ -46,58 +46,59 @@ This is a command line utility for managing the one hour one life server.
 
 Usage:
 
-        onelife set-version <version_number>:
-                Sets the version for the server. This must match the
-                version that the client is running. The client's
-                version number can be found in the dataVersionNumber.txt
-                file on the client machine.
+	onelife set-version <version_number>:
+		Sets the version for the server. This must match the
+		version that the client is running. The client's
+		version number can be found in the dataVersionNumber.txt
+		file on the client machine.
 
-        onelife get-version:
-                Shows the version of the game the server is running.
+	onelife get-version:
+		Shows the version of the game the server is running.
 
-        onelife start:
-                This starts the server. Use Ctrl+z to end it gracefully.
+	onelife start:
+		This starts the server. Use Ctrl+z to end it gracefully.
 
-        onelife install:
-                This will install the server. Note: it will wipe the servers
-                configuration if currently installed. Its recommended to use
-                reconfigure if you are wanting to reconfigure it.
+	onelife install:
+		This will install the server.
 
-        onelife uninstall:
-                Removes the server and all configuation files to free up space.
+	onelife uninstall:
+		Removes the server and all configuation files to free up space.
 
-        onelife reinstall:
-                This is equivalent to using uninstall and then install. It's useful
-                if you want to clean out server logs and reset the map.
-                Note: reconfigure is significantly faster if you are only wanting
-                to reconfigure the server.
+	onelife reinstall:
+		This is equivalent to using uninstall and then install. It's useful
+		if you want to clean out server logs and reset the map.
+		Note: reconfigure is significantly faster if you are only wanting
+		to reconfigure the server.
 
-        onelife reconfigure:
-                This will reconfigure the server using the walkthrough installation.
-                It is also the recommened way to update an exising server. Reconfiguring
-                will not change or remove the map.
+	onelife reconfigure:
+		This will reconfigure the server using the walkthrough installation.
+		It is also the recommened way to update an exising server, but does
+		wipe the map.
 
-        onelife set-password <password>:
-                Sets the password for the server. Clients connecting will need to
-                have this password saved in their settings\serverPassword.ini file.
-                Clients will also need to login using an email or key. The email or
-                key can be anything, but both fields can not be empty. The server
-                needs to be restarted for this setting to take affect.
+	onelife set-password <password>:
+		Sets the password for the server. Clients connecting will need to
+		have this password saved in their settings\serverPassword.ini file.
+		Clients will also need to login using an email or key. The email or
+		key can be anything, but both fields can not be empty. The server 
+		needs to be restarted for this setting to take affect.
 
-        onelife get-password:
-                Reveals the server's password. Unfortunately the server does not
-                provide any method of storing the password in a hashed form.
-                Its recommended that you use a password for your server that
-                is not used anywhere else.
+	onelife get-password:
+		Reveals the server's password. Unfortunately the server does not
+		provide any method of storing the password in a hashed form.
+		Its recommended that you use a password for your server that
+		is not used anywhere else.
 
-        onelife clear-password:
-                Clears the server's password. Restart is needed for changes to
-                take affect.
+	onelife clear-password:
+		Clears the server's password. Restart is needed for changes to
+		take affect.
+
+	onelife play:
+		Starts the client.
 
 Author:
 
-Andrew Klassen  
-aklassen80@yahoo.com  
+Andrew Klassen
+aklassen80@yahoo.com
 
 ## Installation Directories
 
