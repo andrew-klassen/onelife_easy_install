@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=onelife
+Exec=/opt/onelife/OneLifeApp
+Path=/opt/onelife
+Icon=/opt/onelife/portraitLeft.jpg
+Terminal=false
+Type=Application

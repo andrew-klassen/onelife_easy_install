@@ -36,9 +36,7 @@ elif [[ ${1} == "--help" ]]; then
 	echo "		This starts the server. Use Ctrl+z to end it gracefully."
 	echo ''
 	echo "	onelife install:"
-	echo "		This will install the server. Note: it will wipe the servers" 
-	echo "		configuration if currently installed. Its recommended to use" 
-	echo "		reconfigure if you are wanting to reconfigure it."
+	echo "		This will install the server." 
 	echo ''
 	echo "	onelife uninstall:"
 	echo "		Removes the server and all configuation files to free up space."
@@ -51,8 +49,8 @@ elif [[ ${1} == "--help" ]]; then
 	echo ''
 	echo "	onelife reconfigure:"
 	echo "		This will reconfigure the server using the walkthrough installation."
-       	echo "		It is also the recommened way to update an exising server. Reconfiguring" 
-	echo "		will not change or remove the map."
+       	echo "		It is also the recommened way to update an exising server, but does"
+        echo "		wipe the map."	
 	echo ''
 	echo "	onelife set-password <password>:"
 	echo "		Sets the password for the server. Clients connecting will need to"
@@ -70,6 +68,9 @@ elif [[ ${1} == "--help" ]]; then
 	echo "	onelife clear-password:"
 	echo "		Clears the server's password. Restart is needed for changes to"
 	echo "		take affect."
+	echo ''
+	echo "	onelife play:"
+	echo "		Starts the client."
 	echo ''
 	echo "Author:"
 	echo ''
@@ -98,8 +99,11 @@ elif [[ ${1} == reinstall ]]; then
 	cd /usr/sbin/onelife_easy_install
         ./install
 elif [[ ${1} == reconfigure ]]; then
-	cd onelife_easy_install
+	cd /usr/sbin/onelife_easy_install
         ./install walkthrough
+elif [[ ${1} == play ]]; then
+	cd /opt/onelife
+	/opt/onelife/OneLifeApp
 elif [[ ${1} == set-password ]]; then
 	if [[ ! -z "${2}" ]]; then
                 echo "${2}" > /opt/onelife/OneLife/server/settings/clientPassword.ini

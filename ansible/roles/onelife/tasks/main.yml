@@ -14,6 +14,7 @@
 - git:
     repo: 'https://github.com/jasonrohrer/minorGems.git'
     dest: /opt/onelife/minorGems
+    force: yes
 
 # force yes allow repo to be updated/clone with existance of custom configuration
 - git:
@@ -24,6 +25,7 @@
 - git:
     repo: 'https://github.com/jasonrohrer/OneLifeData7.git'
     dest: /opt/onelife/OneLifeData7
+    force: yes
 
 - name: checkout most up to date versions of repositories
   shell: |
@@ -147,6 +149,14 @@
 
   when: server_password is defined
 
+- name: reduce hunger speed
+  shell: |
+     #!/bin/bash
+
+     echo "6.0" > /opt/onelife/OneLife/server/settings/minFoodDecrementSeconds.ini
+
+  when: easy_mode == "yes"
+
 - name: install onelife command line utility
   copy:
     src: source/onelife
@@ -167,3 +177,25 @@
     owner: root
     group: root
     mode: 0700
+
+- name: install onelife.desktop file
+  copy:
+    src: source/onelife.desktop
+    dest: /usr/share/applications/onelife.desktop
+    owner: root
+    group: root
+    mode: 0777
+
+- name: install onelife icon
+  copy:
+    src: source/portraitLeft.jpg
+    dest: /opt/onelife/portraitLeft.jpg
+    owner: root
+    group: root
+    mode: 0777
+
+- name: set onelife permissions
+  shell: |
+     #!/bin/bash
+
+     chmod 777 -R /opt/onelife
