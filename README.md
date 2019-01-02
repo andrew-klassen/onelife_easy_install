@@ -97,8 +97,8 @@ Usage:
 
 Author:
 
-Andrew Klassen
-aklassen80@yahoo.com
+Andrew Klassen  
+aklassen80@yahoo.com  
 
 ## Installation Directories
 
