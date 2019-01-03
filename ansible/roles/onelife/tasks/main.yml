@@ -199,3 +199,47 @@
      #!/bin/bash
 
      chmod 777 -R /opt/onelife
+
+
+
+
+
+
+- name: ticketing system setup
+  block:
+
+     - name: install dependencies
+       apt:
+         name: "{{ packages }}"
+       vars:
+         packages:
+         - apache2
+         - mysql-server
+         - php
+         - php-mysql
+         - python-mysqldb
+
+     - name: import database schema
+       mysql_db:
+         name: onelife_tickets
+         state: import
+         target: "source_code/ticketing_system.sql"
+
+     - mysql_user:
+         name: "php"
+         password: "{{ php_password }}"
+         host: '%'
+         priv: '*.*:ALL,GRANT'
+         state: present
+       ignore_errors: yes
+
+
+
+  when: ticketing_system == 'yes' 
+
+
+
+
+
+
+
