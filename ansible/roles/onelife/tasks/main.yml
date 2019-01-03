@@ -223,7 +223,7 @@
        mysql_db:
          name: onelife_tickets
          state: import
-         target: "source_code/ticketing_system.sql"
+         target: "{{ ansible_base }}/source/ticketing_system.sql"
 
      - mysql_user:
          name: "php"
@@ -233,11 +233,43 @@
          state: present
        ignore_errors: yes
 
+     - name: create web root folder
+       file: 
+         path: "/var/www/html/ticketServer"
+         recurse: yes
+         state: directory
+
+
+     - name: install server.php
+       copy:
+         src: /opt/onelife/minorGems/game/ticketServer/
+         dest: /var/www/html/ticketServer/
+         owner: root
+         group: root
+         mode: 0777
+     
+
+     - name: set parameters in settings file
+       shell: |
+         #!/bin/bash
+
+         sed -i "/^\$databaseUsername/c\\\$databaseUsername = \"php\";" /var/www/html/ticketServer/settings.php
+         sed -i "/^\$databasePassword/c\\\$databasePassword = \"{{ php_password }}\";" /var/www/html/ticketServer/settings.php
+         sed -i "/^\$databaseName/c\\\$databaseName = \"onelife_tickets\";" /var/www/html/ticketServer/settings.php
+         sed -i "/^\$fullServerURL/c\\\$fullServerURL = \"http:\/\/localhost\/ticketServer\/server.php\";" /var/www/html/ticketServer/settings.php
+         sed -i "/^\$useBulkEmailerForNotes/c\\\$useBulkEmailerForNotes = 0;" /var/www/html/ticketServer/settings.php
+         sed -i "/^\$databaseUsername/c\\\$databaseUsername = \"php\";" /var/www/html/ticketServer/settings.php
+         sed -i "/^\$accessPasswords/c\\\$accessPasswords = array();" /var/www/html/ticketServer/settings.php
+         sed -i '/20e1883a3d63607b60677dca87b41e04316ffc63/d' /var/www/html/ticketServer/settings.php
+
+     - name: set ticket server URL
+       shell: |
+         #!/bin/bash
+
+         echo "http://localhost/ticketServer/server.php" > /opt/onelife/OneLife/server/settings/ticketServerURL.ini
 
 
   when: ticketing_system == 'yes' 
-
-
 
 
 
