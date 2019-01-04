@@ -157,8 +157,7 @@
 
   when: easy_mode == "yes"
 
-- name: install onelife command line utility
-  copy:
+- template:
     src: source/onelife
     dest: /usr/sbin/onelife
     owner: root

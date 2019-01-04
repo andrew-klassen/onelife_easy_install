@@ -3,7 +3,7 @@
 
 database='onelife_tickets'
 username='php'
-password="TXQFXBUqSgWMCtoCVvozKwebMUHZbcJsD1oXRELA"
+password="{{ php_password }}"
 
 
 # make sure user is root
