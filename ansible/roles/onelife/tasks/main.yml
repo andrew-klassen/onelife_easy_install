@@ -200,12 +200,9 @@
      chmod 777 -R /opt/onelife
 
 
-
-
-
-
 - name: ticketing system setup
   block:
+
 
      - name: install dependencies
        apt:
@@ -238,7 +235,6 @@
          recurse: yes
          state: directory
 
-
      - name: install server.php
        copy:
          src: /opt/onelife/minorGems/game/ticketServer/
@@ -247,7 +243,6 @@
          group: root
          mode: 0777
      
-
      - name: set parameters in settings file
        shell: |
          #!/bin/bash
@@ -274,8 +269,3 @@
 
 
   when: ticketing_system == 'yes' 
-
-
-
-
-

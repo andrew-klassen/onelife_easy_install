@@ -5,6 +5,7 @@ database='onelife_tickets'
 username='php'
 password="{{ php_password }}"
 
+# for jinjar template
 {% raw %}
 
 # make sure user is root
@@ -88,7 +89,7 @@ elif [[ ${1} == "--help" ]]; then
 	echo "		Creates an unblocked user. If no key is provided, the utility will generate"
 	echo "		a cryptography secure 30 character key and display it to the console. This"
 	echo "		is the recommended method. This key can be added to the clients accountKey.ini"
-	echo " 		if the user wishes to do so, vs copying and pasting. If utility is used on an"
+	echo " 		if the user wishes to do so, vs copying and pasting. If the utility is used on an"
 	echo "		existing email, a second key is created for them and the client can login"
 	echo "		using both."
 	echo ''
@@ -100,6 +101,17 @@ elif [[ ${1} == "--help" ]]; then
 	echo ''
 	echo "	onelife resetuser <email> <optional_key>:"
 	echo "		Deletes all accounts for provided email and creates a new one."
+	echo ''
+	echo "	onelife map:"
+	echo "		Shows in real time the last location of all players known to the server."
+	echo "		Use clearlog to remove old players. Works by parsing /opt/onelife/OneLife/server/log.txt."
+	echo ''
+	echo "	onelife clearlog:"
+	echo "		Clears the /opt/onelife/OneLife/server/log.txt log."
+	echo ''
+	echo "	onelife switch-window-mode:"
+	echo "		If client is running in fullscreen mode, this will switch it over to windowed."
+	echo "		If client is using windowed mode, this switches them to fullscreen."
 	echo ''
 	echo "Author:"
 	echo ''
@@ -253,7 +265,6 @@ elif [[ ${1} == map ]]; then
     		echo $in
 		return $in
 	}
-
 
 	while true; 
 	do
