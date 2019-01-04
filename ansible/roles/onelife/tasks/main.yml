@@ -268,6 +268,11 @@
 
          echo "http://localhost/ticketServer/server.php" > /opt/onelife/OneLife/server/settings/ticketServerURL.ini
 
+     - name: "add ufw exeption for port 80"
+       ufw:
+         rule: allow
+         port: 80
+
 
   when: ticketing_system == 'yes' 
 

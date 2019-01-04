@@ -3,7 +3,7 @@
 
 database='onelife_tickets'
 username='php'
-password=""
+password="TXQFXBUqSgWMCtoCVvozKwebMUHZbcJsD1oXRELA"
 
 
 # make sure user is root
@@ -84,11 +84,21 @@ elif [[ ${1} == "--help" ]]; then
 	echo "		is provided then the utility displays all unblocked users."
 	echo ''
 	echo "	onelife adduser <email> <optional_key>:"
-	echo "		Creates an unblocked user. If no key is provided, the utility with generate"
+	echo "		Creates an unblocked user. If no key is provided, the utility will generate"
 	echo "		a cryptography secure 30 character key and display it to the console. This"
 	echo "		is the recommended method. This key can be added to the clients accountKey.ini"
-	echo " 		if the user wishes to do so, vs copying and pasting."
-	echo "	onelife "
+	echo " 		if the user wishes to do so, vs copying and pasting. If utility is used on an"
+	echo "		existing email, a second key is created for them and the client can login"
+	echo "		using both."
+	echo ''
+	echo "	onelife blockuser <email>:"
+	echo "		Will prevent the user from logging in, but preserves their account email and key."
+	echo ''
+	echo "	onelife unblockuser <email>:"
+	echo "		Allows a perviously blocked user to be able to log back in."
+	echo ''
+	echo "	onelife resetuser <email> <optional_key>:"
+	echo "		Deletes all accounts for provided email and creates a new one."
 	echo ''
 	echo "Author:"
 	echo ''
@@ -105,7 +115,6 @@ elif [[ ${1} == set-version ]]; then
 	        echo "syntax: onelife set-version <version_number>"
 		echo ''
 	fi
-
 elif [[ ${1} == blockuser ]]; then
         if [[ ! -z "${2}" ]]; then
                 	
@@ -117,15 +126,24 @@ elif [[ ${1} == blockuser ]]; then
                 echo "syntax: onelife blockuser <email>"
                 echo ''
         fi
-elif [[ ${1} == showuser ]]; then
+elif [[ ${1} == unblockuser ]]; then
+        if [[ ! -z "${2}" ]]; then
+                        
+                mysql -u ${username} -p${password} -D ${database} -e "UPDATE ticketServer_tickets SET blocked='0' WHERE email ='${2}';" 2> /dev/null
 
+        else
+                echo ''
+                echo "What user?"
+                echo "syntax: onelife unblockuser <email>"
+                echo ''
+        fi
+elif [[ ${1} == showuser ]]; then
 	if [[ -z "${2}" ]]; then
 		mysql -u ${username} -p${password} -D ${database} -e "SELECT email, ticket_id as \`key\` FROM ticketServer_tickets WHERE blocked = 0;" 2> /dev/null
 
 	else
 		mysql -u ${username} -p${password} -D ${database} -e "SELECT email, ticket_id as \`key\` FROM ticketServer_tickets WHERE blocked = 0 AND email = '${2}'" 2> /dev/null	
 	fi
-
 elif [[ ${1} == resetuser ]]; then
         if [[ ! -z "${2}" ]]; then
 
@@ -133,7 +151,7 @@ elif [[ ${1} == resetuser ]]; then
 
 		
 		if [[ -z "${3}" ]]; then
-                        ticket_password=$(head /dev/urandom | tr -dc A-Z2-9 | head -c 30 ;)
+                        ticket_password=$(head /dev/urandom | tr -dc A-HJ-NP-Z2-9 | head -c 25 ;)
                 else
                         ticket_password=${3}
                 fi
@@ -145,11 +163,7 @@ elif [[ ${1} == resetuser ]]; then
                         echo "Duplicate key exists."
                         echo ''
                         exit 1
-
                 fi
-
-
-
 
                 mysql -u ${username} -p${password} -D ${database} -e "INSERT INTO ticketServer_tickets (ticket_id, sale_date, last_download_date, name, email, order_number, tag, coupon_code, email_sent, blocked, download_count, email_opt_in) VALUES ('${ticket_password}', '1970-01-01 00:00:01', '1970-01-01 00:00:01', 'name', '${2}', '0', '0', '0', '0', '0', '0', '0');" 2> /dev/null
 
@@ -157,8 +171,6 @@ elif [[ ${1} == resetuser ]]; then
                 echo "User: ${2}"
                 echo "Key: ${ticket_password}"  
                 echo ''
-
-
         else
                 echo ''
                 echo "What user?"
@@ -167,9 +179,14 @@ elif [[ ${1} == resetuser ]]; then
         fi	
 elif [[ ${1} == adduser ]]; then
         if [[ ! -z "${2}" ]]; then
+		
+		if [[ ${2} != *"@"* ]]; then
+			echo "Email needs to be in the form of an email. <something>@<something>"
+			exit 1
+		fi
 
 		if [[ -z "${3}" ]]; then
-			ticket_password=$(head /dev/urandom | tr -dc A-Z2-9 | head -c 30 ;)
+			ticket_password=$(head /dev/urandom | tr -dc A-HJ-NP-Z2-9 | head -c 25 ;)
 		else
 			ticket_password=${3}
 		fi
@@ -184,16 +201,12 @@ elif [[ ${1} == adduser ]]; then
 
 		fi
 		
-
-
-
 		mysql -u ${username} -p${password} -D ${database} -e "INSERT INTO ticketServer_tickets (ticket_id, sale_date, last_download_date, name, email, order_number, tag, coupon_code, email_sent, blocked, download_count, email_opt_in) VALUES ('${ticket_password}', '1970-01-01 00:00:01', '1970-01-01 00:00:01', 'name', '${2}', '0', '0', '0', '0', '0', '0', '0');" 2> /dev/null
         	
 		echo ''
 		echo "Created user: ${2}"
 	        echo "Key: ${ticket_password}"	
 		echo ''
-
 	else
                 echo ''
                 echo "What email?"
@@ -217,6 +230,66 @@ elif [[ ${1} == reconfigure ]]; then
 elif [[ ${1} == play ]]; then
 	cd /opt/onelife
 	/opt/onelife/OneLifeApp
+elif [[ ${1} == clearlog ]]; then
+	> /opt/onelife/OneLife/server/log.txt
+elif [[ ${1} == switch-window-mode ]]; then
+	current_mode=$(cat /opt/onelife/settings/fullscreen.ini)
+	((current_mode ^= 1))
+	echo $current_mode > /opt/onelife/settings/fullscreen.ini
+elif [[ ${1} == map ]]; then
+
+	array_does_not_contain () { 
+    		local array="$1[@]"
+    		local seeking=$2
+    		local in=1
+    
+    		for element in "${!array}"; do
+        	if [[ $element == *"${seeking}"* ]]; then
+            		in=0
+            		break
+        	fi
+    		done
+    		echo $in
+		return $in
+	}
+
+
+	while true; 
+	do
+
+		players=($(grep "connected as player" /opt/onelife/OneLife/server/log.txt | cut -f16 -d' '))
+		player_ids=($(grep "connected as player" /opt/onelife/OneLife/server/log.txt | cut -f20 -d' '))
+
+		players_map=()
+	
+		for (( i=${#players[@]}-1 ; i>=0 ; i-- )) ;
+        	do
+	
+	       		if_not_exists=$(array_does_not_contain players_map "${players[i]}")
+	       
+               		if  [[ ${if_not_exists} != 0 ]]; then
+				players_map+=("${players[i]},${player_ids[i]}")
+	       		fi
+               
+        	done
+
+
+		for i in "${players_map[@]}"
+		do
+   		
+			player_name=$(echo $i | cut -f1 -d',')
+			player_id=$(echo $i | cut -f2 -d',')
+			player_x=$(grep "${player_id}: MOVE" /opt/onelife/OneLife/server/log.txt | tail -1 | cut -f20 -d' ')
+			player_y=$(grep "${player_id}: MOVE" /opt/onelife/OneLife/server/log.txt | tail -1 | cut -f21 -d' ')
+			echo "${player_name}: ${player_x}x, ${player_y}y"
+   
+		done
+	
+		sleep 1
+		clear
+
+	done
+
 elif [[ ${1} == set-password ]]; then
 	if [[ ! -z "${2}" ]]; then
                 echo "${2}" > /opt/onelife/OneLife/server/settings/clientPassword.ini
