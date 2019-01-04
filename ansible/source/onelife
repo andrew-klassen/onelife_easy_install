@@ -5,6 +5,7 @@ database='onelife_tickets'
 username='php'
 password="{{ php_password }}"
 
+{% raw %}
 
 # make sure user is root
 if [[ $EUID -ne 0 ]]; then
@@ -305,3 +306,4 @@ elif [[ ${1} == get-password ]]; then
 elif [[ ${1} == clear-password ]]; then
 	echo "0" > /opt/onelife/OneLife/server/settings/requireClientPassword.ini
 fi
+{% endraw %}
