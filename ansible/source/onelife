@@ -1,11 +1,17 @@
 #!/bin/bash
 
 
+database='onelife_tickets'
+username='php'
+password=""
+
+
 # make sure user is root
 if [[ $EUID -ne 0 ]]; then
         echo "This script must be run as root."
         exit 1
 fi
+
 
 if [[ -z "${1}" ]]; then
 	echo ''
@@ -72,6 +78,18 @@ elif [[ ${1} == "--help" ]]; then
 	echo "	onelife play:"
 	echo "		Starts the client."
 	echo ''
+	echo "	onelife showuser <optional_email>:"
+	echo "		Shows the user's email and key if server is setup with a ticketing system and if"
+	echo "		the account exist. This utility only shows unblocked/active users. If no email"
+	echo "		is provided then the utility displays all unblocked users."
+	echo ''
+	echo "	onelife adduser <email> <optional_key>:"
+	echo "		Creates an unblocked user. If no key is provided, the utility with generate"
+	echo "		a cryptography secure 30 character key and display it to the console. This"
+	echo "		is the recommended method. This key can be added to the clients accountKey.ini"
+	echo " 		if the user wishes to do so, vs copying and pasting."
+	echo "	onelife "
+	echo ''
 	echo "Author:"
 	echo ''
 	echo "Andrew Klassen"
@@ -87,6 +105,101 @@ elif [[ ${1} == set-version ]]; then
 	        echo "syntax: onelife set-version <version_number>"
 		echo ''
 	fi
+
+elif [[ ${1} == blockuser ]]; then
+        if [[ ! -z "${2}" ]]; then
+                	
+		mysql -u ${username} -p${password} -D ${database} -e "UPDATE ticketServer_tickets SET blocked='1' WHERE email ='${2}';" 2> /dev/null
+
+        else
+                echo ''
+                echo "What user?"
+                echo "syntax: onelife blockuser <email>"
+                echo ''
+        fi
+elif [[ ${1} == showuser ]]; then
+
+	if [[ -z "${2}" ]]; then
+		mysql -u ${username} -p${password} -D ${database} -e "SELECT email, ticket_id as \`key\` FROM ticketServer_tickets WHERE blocked = 0;" 2> /dev/null
+
+	else
+		mysql -u ${username} -p${password} -D ${database} -e "SELECT email, ticket_id as \`key\` FROM ticketServer_tickets WHERE blocked = 0 AND email = '${2}'" 2> /dev/null	
+	fi
+
+elif [[ ${1} == resetuser ]]; then
+        if [[ ! -z "${2}" ]]; then
+
+                mysql -u ${username} -p${password} -D ${database} -e "DELETE FROM ticketServer_tickets WHERE email='${2}';" 2> /dev/null
+
+		
+		if [[ -z "${3}" ]]; then
+                        ticket_password=$(head /dev/urandom | tr -dc A-Z2-9 | head -c 30 ;)
+                else
+                        ticket_password=${3}
+                fi
+
+                duplicate_detected=$(mysql -u ${username} -p${password} -D ${database} -N -e "SELECT COUNT(*) FROM ticketServer_tickets WHERE ticket_id = UPPER('${3}');" 2> /dev/null)
+
+                if [[ ${duplicate_detected} != '0' ]];then
+                        echo ''
+                        echo "Duplicate key exists."
+                        echo ''
+                        exit 1
+
+                fi
+
+
+
+
+                mysql -u ${username} -p${password} -D ${database} -e "INSERT INTO ticketServer_tickets (ticket_id, sale_date, last_download_date, name, email, order_number, tag, coupon_code, email_sent, blocked, download_count, email_opt_in) VALUES ('${ticket_password}', '1970-01-01 00:00:01', '1970-01-01 00:00:01', 'name', '${2}', '0', '0', '0', '0', '0', '0', '0');" 2> /dev/null
+
+                echo ''
+                echo "User: ${2}"
+                echo "Key: ${ticket_password}"  
+                echo ''
+
+
+        else
+                echo ''
+                echo "What user?"
+                echo "syntax: onelife resetuser <email>"
+                echo ''
+        fi	
+elif [[ ${1} == adduser ]]; then
+        if [[ ! -z "${2}" ]]; then
+
+		if [[ -z "${3}" ]]; then
+			ticket_password=$(head /dev/urandom | tr -dc A-Z2-9 | head -c 30 ;)
+		else
+			ticket_password=${3}
+		fi
+
+		duplicate_detected=$(mysql -u ${username} -p${password} -D ${database} -N -e "SELECT COUNT(*) FROM ticketServer_tickets WHERE ticket_id = UPPER('${3}');" 2> /dev/null)
+
+		if [[ ${duplicate_detected} != '0' ]];then
+			echo ''
+			echo "Duplicate key exists."
+			echo ''
+			exit 1
+
+		fi
+		
+
+
+
+		mysql -u ${username} -p${password} -D ${database} -e "INSERT INTO ticketServer_tickets (ticket_id, sale_date, last_download_date, name, email, order_number, tag, coupon_code, email_sent, blocked, download_count, email_opt_in) VALUES ('${ticket_password}', '1970-01-01 00:00:01', '1970-01-01 00:00:01', 'name', '${2}', '0', '0', '0', '0', '0', '0', '0');" 2> /dev/null
+        	
+		echo ''
+		echo "Created user: ${2}"
+	        echo "Key: ${ticket_password}"	
+		echo ''
+
+	else
+                echo ''
+                echo "What email?"
+                echo "syntax: onelife adduser <email> <optional_key>"
+                echo ''
+        fi
 elif [[ ${1} == get-version ]]; then
 	cat /opt/onelife/OneLife/server/serverCodeVersionNumber.txt
 elif [[ ${1} == install ]]; then
