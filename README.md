@@ -38,7 +38,9 @@ onelife start
 
 onelife is the easy installer's command line utility that makes managing the   
 server after installation easier. Please refer to the --help page below for  
-documentation.
+documentation. After installation the one hour one life client will be added  
+to the gnome applications menu so that the onelife utility is not needed for
+the client.
 
 root@server:~# onelife --help
 
