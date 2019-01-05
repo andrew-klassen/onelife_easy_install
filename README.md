@@ -38,7 +38,9 @@ onelife start
 
 onelife is the easy installer's command line utility that makes managing the   
 server after installation easier. Please refer to the --help page below for  
-documentation.
+documentation. After installation the one hour one life client will be added  
+to the gnome applications menu so that the onelife utility is not needed for
+the client.
 
 root@server:~# onelife --help
 
@@ -94,6 +96,39 @@ Usage:
 
 	onelife play:
 		Starts the client.
+
+	onelife showuser <optional_email>:
+		Shows the user's email and key if server is setup with a ticketing system and if
+		the account exist. This utility only shows unblocked/active users. If no email
+		is provided then the utility displays all unblocked users.
+
+	onelife adduser <email> <optional_key>:
+		Creates an unblocked user. If no key is provided, the utility will generate
+		a cryptography secure 30 character key and display it to the console. This
+		is the recommended method. This key can be added to the clients accountKey.ini
+ 		if the user wishes to do so, vs copying and pasting. If the utility is used on an
+		existing email, a second key is created for them and the client can login
+		using both.
+
+	onelife blockuser <email>:
+		Will prevent the user from logging in, but preserves their account email and key.
+
+	onelife unblockuser <email>:
+		Allows a perviously blocked user to be able to log back in.
+
+	onelife resetuser <email> <optional_key>:
+		Deletes all accounts for provided email and creates a new one.
+
+	onelife map:
+		Shows in real time the last location of all players known to the server.
+		Use clearlog to remove old players. Works by parsing /opt/onelife/OneLife/server/log.txt.
+
+	onelife clearlog:
+		Clears the /opt/onelife/OneLife/server/log.txt log.
+
+	onelife switch-window-mode:
+		If client is running in fullscreen mode, this will switch it over to windowed.
+		If client is using windowed mode, this switches them to fullscreen.
 
 Author:
 

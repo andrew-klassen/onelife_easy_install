@@ -33,13 +33,28 @@ if [[ $1 == "walkthrough" ]]; then
 		read -p "Eve spawn position, [fixed or random]: " spawn_position
 	done
 
-	read -p "Require login credentials: (default: false): " require_login
+	read -p "Create a unqiue ticketing system for this server? [yes or no] (default: no): " ticketing_system
 
-	# make sure using provided a correct response
-	while [[ ${require_login} != true && ${require_login} != false && ${require_login} != "" ]]
+        # make sure using provided a correct response
+        while [[ ${ticketing_system} != "yes" && ${ticketing_system} != "no" && ${ticketing_system} != "" ]]
         do
-                read -p "Require login credentials [true or false]: " require_login
+                read -p "Create a unqiue ticketing system for this server? [yes or no] (default: no): " ticketing_system
         done
+
+
+	if [[ ${ticketing_system} != "yes" ]]; then
+
+		read -p "Require offical login credentials: (default: false): " require_login
+
+		# make sure using provided a correct response
+		while [[ ${require_login} != true && ${require_login} != false && ${require_login} != "" ]]
+        	do
+                	read -p "Require offical login credentials [true or false]: " require_login
+        	done
+
+		read -p "Server password (default: none): " server_password
+
+	fi
 
 	read -p "Turn on easy mode/less hungry? [yes or no] (default: no): " easy_mode
 
@@ -49,7 +64,6 @@ if [[ $1 == "walkthrough" ]]; then
 		read -p "Turn on easy mode/less hungry? [yes or no] (default: no): " easy_mode
         done
 
-	read -p "Server password (default: none): " server_password
 	read -p "Port number (default: 8005): " port_number
 
 fi
@@ -97,8 +111,15 @@ if [[ $1 == "walkthrough" ]]; then
 	if [[ -z "${easy_mode}" ]]; then
                 easy_mode="no"
         fi
+	if [[ -z "${ticketing_system}" ]]; then
+                ticketing_system="no"
+	else
+		ticket_check="1"
+        fi
+	
+	php_password=$(openssl rand -base64 30)
 
-	ansible-playbook install.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password} max_users=${max_users} ${spawn_position} ticket_check=${ticket_check} easy_mode=${easy_mode} ${server_password} port_number=${port_number}"
+	ansible-playbook install.yml -e "ansible_base=$(pwd) ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password} max_users=${max_users} ${spawn_position} ticket_check=${ticket_check} easy_mode=${easy_mode} ${server_password} port_number=${port_number} ticketing_system=${ticketing_system} php_password=${php_password}"
 else
 	ansible-playbook install.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password}"	
 fi

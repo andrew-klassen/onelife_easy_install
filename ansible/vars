@@ -5,3 +5,5 @@ eve_y: "{{ 1000 | random(start=100) }}"
 port_number: 8005
 max_users: 160
 easy_mode: "no"
+php_password: "testpassword"
+ticketing_system: "no"
