@@ -101,6 +101,7 @@
     - { src: 'objects', dest: 'objects' }
     - { src: 'transitions', dest: 'transitions' }
     - { src: 'categories', dest: 'categories' }
+    - { src: 'tutorialMaps', dest: 'tutorialMaps' }
 
 - name: set server to correct version
   shell: |
