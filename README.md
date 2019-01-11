@@ -104,7 +104,7 @@ Usage:
 
 	onelife adduser <email> <optional_key>:
 		Creates an unblocked user. If no key is provided, the utility will generate
-		a cryptography secure 30 character key and display it to the console. This
+		a cryptographically secure 30 character key and display it to the console. This
 		is the recommended method. This key can be added to the clients accountKey.ini
  		if the user wishes to do so, vs copying and pasting. If the utility is used on an
 		existing email, a second key is created for them and the client can login
