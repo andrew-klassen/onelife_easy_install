@@ -7,3 +7,5 @@ max_users: 160
 easy_mode: "no"
 php_password: "testpassword"
 ticketing_system: "no"
+backup_root: "~/onelife_backup"
+server_root: "/opt/onelife/OneLife/server"
