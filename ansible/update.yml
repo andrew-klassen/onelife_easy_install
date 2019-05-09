@@ -6,4 +6,7 @@
   vars_files:
    - vars 
   roles:
-   - update
+   - backup
+   - onelife
+   - restore
+

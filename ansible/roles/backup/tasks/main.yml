@@ -1,0 +1,14 @@
+
+- name: clear cache files
+  shell: | 
+       #!/bin/bash
+       
+       cd /opt/onelife/OneLifeData7
+       rm -rf */cache.fcz
+       rm -rf */bin_*cache.fcz
+
+- name: make backup of the server directory
+  synchronize: 
+     src: "{{ server_root }}"
+     dest: "{{ backup_root }}"
+
