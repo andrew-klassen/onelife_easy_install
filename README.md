@@ -76,9 +76,9 @@ Usage:
                 Update backs up your current settings and map, updates the server, and
                 then re-applies them.
 
-        onelife reconfigure:
-                This will reconfigure the server using the walkthrough installation.
-                It also  updates an exising server, but does wipe the map.
+	onelife reconfigure:
+		This will reconfigure the server using the walkthrough installation.
+		It also  updates an exising server, but does wipe the map.
 
 	onelife set-password <password>:
 		Sets the password for the server. Clients connecting will need to
