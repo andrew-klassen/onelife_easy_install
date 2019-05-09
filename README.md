@@ -73,8 +73,8 @@ Usage:
 		to reconfigure the server.
 
 	onelife update:
-                Update backs up your current settings and map, updates the server, and
-                then re-applies them.
+		Update backs up your current settings and map, updates the server, and
+		then re-applies them.
 
 	onelife reconfigure:
 		This will reconfigure the server using the walkthrough installation.
