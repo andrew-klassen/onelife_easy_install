@@ -8,7 +8,5 @@
        rm -rf */bin_*cache.fcz
 
 - name: make backup of the server directory
-  synchronize: 
-     src: "{{ server_root }}"
-     dest: "{{ backup_root }}"
+  command: cp -R {{ server_root }} {{ backup_root }}
 
