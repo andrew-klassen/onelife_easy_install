@@ -1,0 +1,46 @@
+
+- name: reinstate data files
+  command: cp {{ backup_root }}/{{ item }} {{ server_root }}/{{ item }}
+  register: command_response
+  with_items:
+   - "meta.db"
+   - "recentPlacements.txt"
+   - "lastEveLocation.txt" 
+   - "eveRadius.txt"
+   - "playerStats.db"
+   - "eve.db"
+   - "lookTime.db"
+   - "map.db"
+   - "mapTime.db"
+   - "biome.db"
+   - "grave.db"
+   - "floorTime.db"
+   - "floor.db"
+   - "log.txt" 
+  failed_when: "'No such file or directory' not in command_response.stderr and '' not in command_response.stderr"
+
+- name: reinstate settings
+  command: cp {{ backup_root }}/settings/{{ item }} {{ server_root }}/settings/{{ item }}
+  register: command_response
+  with_items:
+   - "requireClientPassword.ini"
+   - "clientPassword.ini"
+   - "nextPlayerID.ini"
+   - "sequenceNumber.ini"
+   - "forceEveLocation.ini"
+   - "forceEveLocationX.ini"
+   - "forceEveLocationY.ini"
+   - "allowVOGMode.ini"
+   - "vogAllowAccounts.ini"
+  failed_when: "'No such file or directory' not in command_response.stderr and '' not in command_response.stderr"
+
+- name: reinstate logs
+  command: cp -R {{ backup_root }}/{{ item }}/* {{ server_root }}/{{ item }}/
+  register: command_response
+  with_items:
+   - "lifeLog"
+   - "curseLog"
+   - "foodLog"
+   - "failureLog"
+  failed_when: "'No such file or directory' not in command_response.stderr and '' not in command_response.stderr"
+

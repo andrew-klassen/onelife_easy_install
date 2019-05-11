@@ -1,0 +1,37 @@
+#!/bin/bash
+
+
+# make sure user is root
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as root." 
+	exit 1
+fi
+
+# login info for ansible
+read -p "Ssh username (needs sudo power): " ssh_username
+read -s -p "Ssh password: " ssh_password
+
+echo ''
+
+
+# skip installing ansible if already installed
+if ! command -v ansible > /dev/null 2>&1; then
+
+		apt-get update
+		apt-get install software-properties-common -y
+		add-apt-repository ppa:ansible/ansible -y
+		apt-get update
+		apt-get install ansible openssh-server -y
+
+else
+
+	echo ''
+	echo ''
+	echo "Ansible is installed. Skipping ansible Installation."
+
+fi
+
+
+cd ansible
+
+ansible-playbook update.yml -e "ansible_user=${ssh_username} ansible_ssh_pass=${ssh_password} ansible_sudo_pass=${ssh_password}"	

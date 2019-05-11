@@ -1,3 +1,4 @@
+
 - name: install dependencies
   apt:
     name: "{{ packages }}"
@@ -178,6 +179,14 @@
     group: root
     mode: 0700
 
+- name: install onelife update script
+  copy:
+    src: ../update
+    dest: /usr/sbin/onelife_easy_install/update
+    owner: root
+    group: root
+    mode: 0700
+
 - name: install onelife.desktop file
   copy:
     src: source/onelife.desktop
@@ -270,3 +279,4 @@
 
 
   when: ticketing_system == 'yes' 
+

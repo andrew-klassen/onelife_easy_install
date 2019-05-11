@@ -1,0 +1,12 @@
+---
+
+- hosts: server
+  become: true
+  gather_facts: no
+  vars_files:
+   - vars 
+  roles:
+   - backup
+   - onelife
+   - restore
+

@@ -55,10 +55,13 @@ elif [[ ${1} == "--help" ]]; then
 	echo "		Note: reconfigure is significantly faster if you are only wanting" 
 	echo "		to reconfigure the server."
 	echo ''
+	echo "	onelife update:"
+	echo "		Update backs up your current settings and map, updates the server, and"
+	echo "		then re-applies them."
+	echo ''
 	echo "	onelife reconfigure:"
 	echo "		This will reconfigure the server using the walkthrough installation."
-       	echo "		It is also the recommened way to update an exising server, but does"
-        echo "		wipe the map."	
+       	echo "		It also  updates an exising server, but does wipe the map."	
 	echo ''
 	echo "	onelife set-password <password>:"
 	echo "		Sets the password for the server. Clients connecting will need to"
@@ -240,6 +243,9 @@ elif [[ ${1} == reinstall ]]; then
 elif [[ ${1} == reconfigure ]]; then
 	cd /usr/sbin/onelife_easy_install
         ./install walkthrough
+elif [[ ${1} == update ]]; then
+	cd /usr/sbin/onelife_easy_install
+        ./update
 elif [[ ${1} == play ]]; then
 	cd /opt/onelife
 	/opt/onelife/OneLifeApp
